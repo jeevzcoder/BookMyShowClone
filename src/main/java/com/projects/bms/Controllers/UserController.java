@@ -7,21 +7,26 @@ import com.projects.bms.Models.User;
 import com.projects.bms.Models.UserResponseStatus;
 import com.projects.bms.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+//@RequestMapping("/User")
 public class UserController {
     UserService userService;
     @Autowired
     UserController(UserService userService){
         this.userService=userService;
     }
-
-    SignUpUserResponseDto signUp(SignUpUserRequestDto requestDto) throws Exception {
+    @PostMapping("/register/{requestDto}")
+    SignUpUserResponseDto signUp(@PathVariable("requestDto") SignUpUserRequestDto requestDto) throws Exception {
         try {
             User user = userService.signUp(requestDto.getEmail(), requestDto.getPassword());
             SignUpUserResponseDto responseDto = new SignUpUserResponseDto();
-            //responseDto.setUserId(user.getUserId());
             responseDto.setResponseStatus(UserResponseStatus.Present);
             return responseDto;
         } catch (Exception e) {

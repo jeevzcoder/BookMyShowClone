@@ -8,24 +8,28 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @Getter
 @Setter
-@Controller
+@RestController
+@RequestMapping("/Booking")
 public class BookingController {
     BookingService bookingService;
     //1. Select the seat List of seats with ID
     //2. check the status of seats
     //3. if available lock the seats
-    //4.\
     @Autowired
     BookingController(BookingService bookingService){
         this.bookingService=bookingService;
     }
+    @PostMapping("/book/{requestDto}")
+    BookingResponseDto bookMovie(@PathVariable("requestDto") BookingRequestDto requestDto) throws Exception{
 
-    BookingResponseDto bookMovie(BookingRequestDto requestDto) throws Exception{
-        //BookingResponseDto responseDto= new BookingResponseDto();
         Booking booking=bookingService.bookMovie(requestDto.getUserId(), requestDto.getShowId(),requestDto.getShowSeatId());
         return new BookingResponseDto();
 
